@@ -22,6 +22,7 @@ import pandas as pd
 from PyDictionary import PyDictionary
 from nltk.corpus import stopwords
 import sys
+import project_params as pp
 
 
 dictionary = PyDictionary()
@@ -54,8 +55,8 @@ def remove_stops(s):
 
 ### Reading input files. ``Hamid_data_trimmed`` contains no numbers. 
 ### This makes the code a lot faster:
-train = pd.read_csv('../data/Hamid_data_trimmed/training_data_trimmed.csv',encoding = 'ISO-8859-1')
-test = pd.read_csv('../data/Hamid_data_trimmed/test_data_trimmed.csv',encoding = 'ISO-8859-1')
+train = pd.read_csv(pp.output_root_dir +  'Train_trimmed'+ '.csv',encoding = 'ISO-8859-1')
+test = pd.read_csv(pp.output_root_dir +  'Test_trimmed'+ '.csv',encoding = 'ISO-8859-1')
 
 train.fillna('ForgetIt', inplace=True)
 test.fillna('ForgetIt', inplace=True)
@@ -71,7 +72,7 @@ test['Synonym'] = test.search_trimmed.map(synonfinder)
 trainSyn = train.ix[:,['id','Synonym']]
 testSyn = test.ix[:,['id','Synonym']]
 
-trainSyn2.to_csv("../data/aliCleaned/train_SynonymDropBox.csv", index=False, encoding = 'utf-8')
-testSyn2.to_csv("../data/aliCleaned/test_SynonymDropBox.csv", index=False, encoding = 'utf-8')
+trainSyn2.to_csv(pp.synonyms_train_raw_file, index=False, encoding = 'utf-8')
+testSyn2.to_csv(pp.synonyms_test_raw_file, index=False, encoding = 'utf-8')
 
 # End of Code

@@ -42,7 +42,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import random
 from spell_corr import *
 from xgbFunctions import * # check this file for choosing the right `stemmer`
-
+import project_params as pp
 #### Keys : ####
 doStem = True # Set this to True only for the first time
 dateTag = 'Apr7'   # data tag for (reading/writing) the latest cleaned file
@@ -51,14 +51,14 @@ ResuleDateTag = 'Apr25' # the submission file date tag
 
 
 if doStem:
-    df_train = pd.read_csv('../data/train.csv', encoding="ISO-8859-1")
-    df_test = pd.read_csv('../data/test.csv', encoding="ISO-8859-1")
-    df_pro_desc = pd.read_csv('../data/product_descriptions.csv')
-    df_attr = pd.read_csv('../data/attributes.csv')
+    df_train = pd.read_csv(pp.train_raw_file, encoding="ISO-8859-1")
+    df_test = pd.read_csv(pp.test_raw_file, encoding="ISO-8859-1")
+    df_pro_desc = pd.read_csv(pp.description_raw_file)
+    df_attr = pd.read_csv(pp.attribute_raw_file)
     df_brand = df_attr.ix[df_attr.name == "MFG Brand Name", ["product_uid", "value"]].rename(columns={"value": "brand"})
 
-    df_trainSyn = pd.read_csv('../data/aliCleaned/train_SynonymDropBox.csv',dtype={'Synonym':np.dtype(str)})
-    df_testSyn = pd.read_csv('../data/aliCleaned/test_SynonymDropBox.csv',dtype={'Synonym':np.dtype(str)})
+    df_trainSyn = pd.read_csv(pp.synonyms_train_raw_file,dtype={'Synonym':np.dtype(str)})
+    df_testSyn = pd.read_csv(pp.synonyms_test_raw_file,dtype={'Synonym':np.dtype(str)})
 
     df_train = pd.merge(df_train,df_trainSyn,on='id', how='left')
     df_test = pd.merge(df_test,df_testSyn,on='id', how='left')
@@ -101,7 +101,7 @@ if doStem:
     df_all.search_term.replace(spell_check_dict,inplace=True)
 
 else:
-    df_train = pd.read_csv('../data/train.csv', encoding="ISO-8859-1")
+    df_train = pd.read_csv(pp.train_raw_file, encoding="ISO-8859-1")
     num_train = df_train.shape[0]
 
 if Snow:
@@ -170,14 +170,14 @@ df_all['brand_feature'] = df_all['brand'].map(lambda x:d[x])
 df_all['search_term_feature'] = df_all['search_term'].map(lambda x:len(x))
 
 ### Reading the selected columns from Arman features:
-tr_newFeat = pd.read_csv('../data/newFeatTrain.csv')
-ts_newFeat = pd.read_csv('../data/newFeatTest.csv')
+tr_newFeat = pd.read_csv(pp.output_root_dir+'newFeatTrain.csv')
+ts_newFeat = pd.read_csv(pp.output_root_dir+'newFeatTest.csv')
 df_allNew = pd.concat((tr_newFeat, ts_newFeat), axis=0, ignore_index=True)
 
 ### Reading Cosine similarity 
-tr_tfidf = pd.read_csv('../data/Train_tfidf_org.csv')
+tr_tfidf = pd.read_csv(pp.output_root_dir+'Train_tfidf_org.csv')
 tr_tfidf.drop(['relevance'],axis=1,inplace=True)
-ts_tfidf = pd.read_csv('../data/Test_tfidf_org.csv')
+ts_tfidf = pd.read_csv(pp.output_root_dir+'Test_tfidf_org.csv')
 df_allTfidf = pd.concat((tr_tfidf, ts_tfidf), axis=0, ignore_index=True)
 
 df_all = pd.merge(df_all,df_allNew,on='id')

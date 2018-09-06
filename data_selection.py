@@ -21,13 +21,13 @@ import numpy as np
 import pandas as pd
 
 ### Reading input data:
-df_ts1 = pd.read_csv('../../homedepotdata/Test1.csv')
-df_ts2 = pd.read_csv('../../homedepotdata/Test2.csv')
-df_ts3 = pd.read_csv('../../homedepotdata/Test3.csv')
-df_ts4 = pd.read_csv('../../homedepotdata/Test4.csv')
+df_ts1 = pd.read_csv(pp.output_root_dir+'Test1.csv')
+df_ts2 = pd.read_csv(pp.output_root_dir+'Test2.csv')
+df_ts3 = pd.read_csv(pp.output_root_dir+'Test3.csv')
+df_ts4 = pd.read_csv(pp.output_root_dir+'Test4.csv')
 
-df_tr1 = pd.read_csv('../../homedepotdata/Train1.csv')
-df_tr2 = pd.read_csv('../../homedepotdata/Train2.csv')
+df_tr1 = pd.read_csv(pp.output_root_dir+'Train1.csv')
+df_tr2 = pd.read_csv(pp.output_root_dir+'Train2.csv')
 
 ### concat train and test:
 frames = [df_ts1,df_ts2,df_ts3,df_ts4]
@@ -83,7 +83,7 @@ for c1 in range(len(names)):
 trainNew = TRAIN[goodCol]
 testNew = TEST[goodCol]
 
-trainNew.to_csv('newFeatTrain.csv',index=False)
-testNew.to_csv('newFeatTest.csv',index=False)
+trainNew.to_csv(pp.input_root_dir+'newFeatTrain.csv',index=False)
+testNew.to_csv(pp.input_root_dir+'newFeatTest.csv',index=False)
 
 # End of Code

@@ -21,12 +21,13 @@ import re
 import time
 from random import randint
 import pandas as pd
+import project_params as pp
 
 # Reading input data:
-train = pd.read_csv('../data/train.csv', encoding="ISO-8859-1")
-test = pd.read_csv('../data/test.csv', encoding="ISO-8859-1")
+train = pd.read_csv(pp.train_raw_file, encoding="ISO-8859-1")
+test = pd.read_csv(pp.test_raw_file, encoding="ISO-8859-1")
 
-START_SPELL_CHECK="<span class=\"spell\">Showing results for</span>"
+START_SPELL_CHECK="<span class=\"gL9Hy\">Showing results for</span>"
 END_SPELL_CHECK="<br><span class=\"spell_orig\">Search instead for"
 
 HTML_Codes = (
